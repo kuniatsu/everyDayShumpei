@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja" id="html">
+    <head>
+        <meta charset="utf-8">
+        <title>毎日しゅん</title>
+        <style>
+body {
+  background-image: url(images/back1.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #464646;
+
+}
+#center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* -webkit-transform: translate(-50%, -50%); */
+}
+#footer{
+    position: absolute;
+    bottom: 1%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* -webkit-transform: translate(-50%, -50%); */
+}
+
+        </style>
+    </head>
+    <body>
+        <div id="center"><img id="box" src="images/takarabako.png"></div>
+        <div id="footer"><p><span>footer</span><span>footer</span><span>footer</span></p></div>
+        <script src="./WebStorage.js"></script>
+        <script >
+            let ws;
+            (function(){
+                makeWs();
+
+                console.dir(box);
+                box.addEventListener("click", function(){
+                    console.log("今日のしゅん");
+                    ws.addCommaItem("shumpei_key",(Math.round( Math.random()*10))+"");
+                });
+
+                var startX;        // タッチ開始 x座標
+                var startY;        // タッチ開始 y座標
+                var moveX;    // スワイプ中の x座標
+                var moveY;    // スワイプ中の y座標
+                var dist = 0;    // スワイプを感知する最低距離（ピクセル単位）
+                
+                // タッチ開始時： xy座標を取得
+                html.addEventListener("touchstart", function(e) {
+                    e.preventDefault();
+                    startX = e.touches[0].pageX;
+                    startY = e.touches[0].pageY;
+                    console.log(startX+":"+startY);
+                });
+                
+                // スワイプ中： xy座標を取得
+                html.addEventListener("touchmove", function(e) {
+                    e.preventDefault();
+                    moveX = e.changedTouches[0].pageX;
+                    moveY = e.changedTouches[0].pageY;
+                    console.log(moveX+":"+moveY);
+                });
+                
+                // タッチ終了時： スワイプした距離から左右どちらにスワイプしたかを判定する/距離が短い場合何もしない
+                html.addEventListener("touchend", function(e) {
+                    if (startX > moveX && startX > moveX + dist) {        // 右から左にスワイプ
+                        // 右から左にスワイプした時の処理
+                        alert("ナイススワイプ");
+                    }
+                });
+
+            })();
+
+            /**
+             * init WebStorage
+             */
+             function makeWs(){
+                if(ws == undefined || ws == null){
+                    ws = new WebStorage();
+                }        
+                ws.log();
+            }
+        </script>
+    </body>
+</html>
